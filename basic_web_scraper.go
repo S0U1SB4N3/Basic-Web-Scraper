@@ -31,8 +31,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	file, err := os.Create("output.csv")
-	if err != nil {
+	file, err2 := os.Create("output.csv")
+	if err2 != nil {
 		log.Fatal("Cannot create file", err)
 	}
 	//Setup CSV File
