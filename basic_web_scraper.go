@@ -1,32 +1,58 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
-	http.HandleFunc("/", indexHandler)
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("Defaulting to port %s", port)
+	my_url := "https://shop.76fireworks.com/category/Artillery-Shells"
+	response, error := http.Get(my_url)
+	if error != nil {
+		log.Fatal(error)
 	}
-
-	log.Printf("Listening on port %s", port)
-	log.Printf("Open http://localhost:%s in the browser", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
-}
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-	_, err := fmt.Fprint(w, "Hello, World!")
+	doc, err := goquery.NewDocumentFromReader(response.Body)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		log.Fatal(err)
 	}
+
+	file, err := os.Create("output.csv")
+	if err != nil {
+		log.Fatal("Cannot create file", err)
+	}
+	//Setup CSV File
+	writer := csv.NewWriter(file)
+	content := []string{"Name", "Link"}
+	writer.Write(content)
+	writer.Flush()
+
+	// Use goquery to select specific elements from the page
+	doc.Find("table.product_list").Find("tbody").Find("tr").Find("td").Find("a").Each(func(i int, s *goquery.Selection) {
+		// For each item found, link text and href are extracted
+		linkTag := s.Find("span").First()
+		link, _ := s.Attr("href")
+		//prepend link with domain
+		link = "https://shop.76fireworks.com" + link
+		text := strings.TrimSpace(linkTag.Text())
+		if text != "" {
+			fmt.Printf("Link: %s Text: %s \n", link, text)
+
+			content := []string{text, link}
+			writer.Write(content)
+		}
+	})
+
+	writer.Flush()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
+
 }
