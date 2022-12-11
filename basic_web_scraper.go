@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2022. All Rights Reserved Next Generation Cybernetics, LLC
+ */
+// Resources used:
+// GoQuery Docs: https://pkg.go.dev/github.com/PuerkitoBio/goquery#section-documentation
+// CSV Writer: https://golang.org/pkg/encoding/csv/#example_Writer
+//Further reading
+// GoQuery Example: https://www.golangprograms.com/web-scraping-with-go.html
+// GoQuery Example: https://www.golangprograms.com/scrape-data-from-web-page.html
 package main
 
 import (
@@ -11,10 +20,10 @@ import (
 )
 
 func main() {
-	my_url := "https://shop.76fireworks.com/category/Artillery-Shells"
-	response, error := http.Get(my_url)
-	if error != nil {
-		log.Fatal(error)
+	myUrl := "https://shop.76fireworks.com/category/Artillery-Shells"
+	response, err1 := http.Get(myUrl)
+	if err1 != nil {
+		log.Fatal(err1)
 	}
 	doc, err := goquery.NewDocumentFromReader(response.Body)
 	if err != nil {
@@ -28,7 +37,10 @@ func main() {
 	//Setup CSV File
 	writer := csv.NewWriter(file)
 	content := []string{"Name", "Link"}
-	writer.Write(content)
+	errWriter := writer.Write(content)
+	if errWriter != nil {
+		return
+	}
 	writer.Flush()
 
 	// Use goquery to select specific elements from the page
@@ -43,10 +55,14 @@ func main() {
 			fmt.Printf("Link: %s Text: %s \n", link, text)
 
 			content := []string{text, link}
-			writer.Write(content)
+			errWriterContent := writer.Write(content)
+			if errWriterContent != nil {
+				return
+			}
 		}
 	})
 
+	//Flush the writer and close the file
 	writer.Flush()
 	defer func(file *os.File) {
 		err := file.Close()
@@ -54,5 +70,4 @@ func main() {
 
 		}
 	}(file)
-
 }
