@@ -7,6 +7,7 @@
 //Further reading
 // GoQuery Example: https://www.golangprograms.com/web-scraping-with-go.html
 // GoQuery Example: https://www.golangprograms.com/scrape-data-from-web-page.html
+
 package main
 
 import (
