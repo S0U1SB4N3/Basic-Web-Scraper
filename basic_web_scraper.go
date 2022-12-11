@@ -1,13 +1,6 @@
 /*
  * Copyright (c) 2022. All Rights Reserved Next Generation Cybernetics, LLC
  */
-// Resources used:
-// GoQuery Docs: https://pkg.go.dev/github.com/PuerkitoBio/goquery#section-documentation
-// CSV Writer: https://golang.org/pkg/encoding/csv/#example_Writer
-//Further reading
-// GoQuery Example: https://www.golangprograms.com/web-scraping-with-go.html
-// GoQuery Example: https://www.golangprograms.com/scrape-data-from-web-page.html
-
 package main
 
 import (
@@ -76,9 +69,9 @@ func main() {
 //how to build an executable from project
 //go build -o build/basic_web_scraper basic_web_scraper.go
 //Run: go tool dist list
-//For MacOS: GOOS=darwin GOARCH=amd64 go build -o build/basic_web_scraper basic_web_scraper.go
+//For MacOS: GOOS=darwin GOARCH=amd64 go build -o build/basic_web_scraper_macOS basic_web_scraper.go
 //To Execute the MacOS executable: ./build/basic_web_scraper
-//For Linux: GOOS=linux GOARCH=amd64 go build -o build/basic_web_scraper basic_web
+//For Linux: GOOS=linux GOARCH=amd64 go build -o build/basic_web_scraper_linux basic_web_scraper.go
 //To Execute the Linux executable: ./build/basic_web_scraper
-//For Windows: GOOS=windows GOARCH=amd64 go build -o build/basic_web_scraper.exe basic_web_scraper.go
+//For Windows: GOOS=windows GOARCH=amd64 go build -o build/basic_web_scraper_64.exe basic_web_scraper.go
 //To Execute the Windows executable: basic_web_scraper.exe
