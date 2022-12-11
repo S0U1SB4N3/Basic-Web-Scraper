@@ -72,3 +72,13 @@ func main() {
 		}
 	}(file)
 }
+
+//how to build an executable from project
+//go build -o build/basic_web_scraper basic_web_scraper.go
+//Run: go tool dist list
+//For MacOS: GOOS=darwin GOARCH=amd64 go build -o build/basic_web_scraper basic_web_scraper.go
+//To Execute the MacOS executable: ./build/basic_web_scraper
+//For Linux: GOOS=linux GOARCH=amd64 go build -o build/basic_web_scraper basic_web
+//To Execute the Linux executable: ./build/basic_web_scraper
+//For Windows: GOOS=windows GOARCH=amd64 go build -o build/basic_web_scraper.exe basic_web_scraper.go
+//To Execute the Windows executable: basic_web_scraper.exe
